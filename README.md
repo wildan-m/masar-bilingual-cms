@@ -1,4 +1,4 @@
-# Masar Engineering Consultants — website and CMS
+# Masar Engineering Consultants: website and CMS
 
 The bilingual (English and Arabic) website of **Masar Engineering Consultants**, an engineering consultancy based in Abu Dhabi, together with the content management system the marketing team uses to run it and the intake desk the proposals team uses to handle incoming requests for proposal (RFPs).
 
@@ -6,7 +6,9 @@ Built with Laravel 13, Filament 5, Blade, Tailwind CSS 4 and Vite.
 
 ## Walkthrough
 
-<!-- walkthrough -->
+![Walkthrough of the CMS: bilingual editing, the public site in both languages, the RFP workflow, the activity log and role-based access](docs/masar-cms-walkthrough.gif)
+
+The recording shows the dashboard, a project edited in English and in Arabic, the same page on the public site in both languages, a request for proposal moved through the workflow, the activity log entry it creates, the users and their roles, and the content editor being refused the requests screen.
 
 ## Features
 
