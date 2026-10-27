@@ -8,9 +8,22 @@ export default defineConfig({
         laravel({
             input: ['resources/css/app.css', 'resources/js/app.js'],
             refresh: true,
+            // Downloaded from fonts.bunny.net at build time and served from
+            // this site, so visitors make no third-party font requests.
             fonts: [
-                bunny('Instrument Sans', {
-                    weights: [400, 500, 600],
+                bunny('IBM Plex Sans', {
+                    alias: 'plex-sans',
+                    weights: [400, 500, 600, 700],
+                    subsets: ['latin'],
+                    preload: [{ weight: 400 }, { weight: 600 }],
+                    optimizedFallbacks: false,
+                }),
+                bunny('IBM Plex Sans Arabic', {
+                    alias: 'plex-arabic',
+                    weights: [400, 500, 600, 700],
+                    subsets: ['arabic'],
+                    preload: [{ weight: 400 }, { weight: 600 }],
+                    optimizedFallbacks: false,
                 }),
             ],
         }),

@@ -1,9 +1,208 @@
 @import 'tailwindcss';
 
-@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
 
 @theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-        'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-sans: 'IBM Plex Sans', 'IBM Plex Sans Arabic', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji',
+        'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-arabic: 'IBM Plex Sans Arabic', 'IBM Plex Sans', ui-sans-serif, system-ui, sans-serif;
+
+    --color-brand-50: #eef7f9;
+    --color-brand-100: #d5ecf1;
+    --color-brand-200: #aed9e3;
+    --color-brand-300: #7dbfcf;
+    --color-brand-400: #4a9fb5;
+    --color-brand-500: #2a8299;
+    --color-brand-600: #1d6a80;
+    --color-brand-700: #195668;
+    --color-brand-800: #164556;
+    --color-brand-900: #123744;
+    --color-brand-950: #0a222c;
+
+    --color-sand-50: #fbf7f1;
+    --color-sand-100: #f4eadb;
+    --color-sand-200: #e9d4b5;
+    --color-sand-300: #dbb886;
+    --color-sand-400: #cf9c5c;
+    --color-sand-500: #c3843f;
+    --color-sand-600: #a86a33;
+    --color-sand-700: #8a552c;
+}
+
+@layer base {
+    html {
+        -webkit-text-size-adjust: 100%;
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+        html {
+            scroll-behavior: smooth;
+        }
+    }
+
+    /* Arabic text uses the Arabic face first; Latin fallback text inside an
+       Arabic page keeps IBM Plex Sans through its own lang attribute. */
+    :lang(ar) {
+        font-family: var(--font-arabic);
+    }
+
+    :lang(en) {
+        font-family: var(--font-sans);
+    }
+
+    :focus-visible {
+        outline: 2px solid var(--color-sand-500);
+        outline-offset: 3px;
+    }
+
+    [id] {
+        scroll-margin-top: 6rem;
+    }
+}
+
+@utility shell {
+    margin-inline: auto;
+    width: 100%;
+    max-width: 76rem;
+    padding-inline: 1.25rem;
+
+    @media (width >= 64rem) {
+        padding-inline: 2rem;
+    }
+}
+
+/* Faint drafting grid used on dark bands and image placeholders. */
+@utility blueprint {
+    background-image:
+        linear-gradient(rgb(255 255 255 / 0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgb(255 255 255 / 0.06) 1px, transparent 1px);
+    background-size: 2rem 2rem;
+}
+
+@layer components {
+    .skip-link {
+        @apply absolute -top-24 start-4 z-50 rounded-md bg-sand-500 px-4 py-2 text-sm font-semibold text-white focus:top-4;
+    }
+
+    .eyebrow {
+        @apply text-xs font-semibold tracking-[0.18em] text-sand-500 uppercase;
+    }
+
+    /* Letter spacing breaks Arabic joining, and Arabic has no case. */
+    :lang(ar) .eyebrow,
+    .eyebrow:lang(ar) {
+        @apply text-sm tracking-normal normal-case;
+    }
+
+    .btn {
+        @apply inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold transition-colors;
+    }
+
+    .btn-primary {
+        @apply bg-sand-500 text-white hover:bg-sand-600;
+    }
+
+    .btn-light {
+        @apply bg-white/10 text-white ring-1 ring-white/30 ring-inset hover:bg-white/20;
+    }
+
+    .btn-outline {
+        @apply text-brand-800 ring-1 ring-brand-200 ring-inset hover:bg-brand-50;
+    }
+
+    .section-title {
+        @apply text-2xl font-semibold tracking-tight text-brand-950 sm:text-3xl;
+    }
+
+    .chip {
+        @apply inline-flex items-center rounded-full px-4 py-1.5 text-sm font-medium ring-1 ring-slate-200 ring-inset transition-colors hover:bg-brand-50;
+    }
+
+    .chip[aria-current='page'] {
+        @apply bg-brand-900 text-white ring-brand-900 hover:bg-brand-800;
+    }
+
+    .form-label {
+        @apply mb-1.5 block text-sm font-medium text-slate-800;
+    }
+
+    .form-control {
+        @apply block w-full rounded-lg border-0 bg-white px-3.5 py-2.5 text-slate-900 ring-1 ring-slate-300 ring-inset placeholder:text-slate-400 focus:ring-2 focus:ring-brand-600 focus:outline-none;
+    }
+
+    .form-control[aria-invalid='true'] {
+        @apply ring-red-500;
+    }
+
+    .form-error {
+        @apply mt-1.5 text-sm text-red-700;
+    }
+
+    .fallback-notice {
+        @apply mb-6 rounded-lg bg-sand-50 px-4 py-3 text-sm text-sand-700 ring-1 ring-sand-200 ring-inset;
+    }
+
+    /* Rich text written in the CMS. Logical properties keep lists, quotes and
+       tables correct in both reading directions. */
+    .rich-text {
+        @apply text-base leading-relaxed text-slate-700;
+
+        & > * + * {
+            margin-block-start: 1.1em;
+        }
+
+        & h2 {
+            @apply mt-10 text-2xl font-semibold text-brand-950;
+        }
+
+        & h3 {
+            @apply mt-8 text-xl font-semibold text-brand-950;
+        }
+
+        & a {
+            @apply font-medium text-brand-700 underline decoration-brand-300 underline-offset-4 hover:decoration-brand-700;
+        }
+
+        & ul,
+        & ol {
+            padding-inline-start: 1.5rem;
+        }
+
+        & ul {
+            list-style: disc;
+        }
+
+        & ol {
+            list-style: decimal;
+        }
+
+        & li + li {
+            margin-block-start: 0.4em;
+        }
+
+        & blockquote {
+            @apply border-s-4 border-sand-400 ps-5 text-slate-600 italic;
+        }
+
+        & table {
+            @apply w-full text-sm;
+        }
+
+        & th,
+        & td {
+            @apply border-b border-slate-200 py-2 text-start;
+        }
+
+        & img {
+            @apply rounded-xl;
+        }
+    }
+
+    .rich-text:lang(ar) {
+        @apply text-[1.05rem] leading-loose;
+
+        & blockquote {
+            font-style: normal;
+        }
+    }
 }
