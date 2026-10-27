@@ -33,7 +33,18 @@ return [
         'local' => [
             'driver' => 'local',
             'root' => storage_path('app/private'),
-            'serve' => true,
+            'serve' => false,
+            'throw' => false,
+            'report' => false,
+        ],
+
+        // Visitor uploads (RFP attachments). Never linked publicly: files are
+        // streamed by an authorised controller only.
+        'private' => [
+            'driver' => 'local',
+            'root' => storage_path('app/private/uploads'),
+            'visibility' => 'private',
+            'serve' => false,
             'throw' => false,
             'report' => false,
         ],
