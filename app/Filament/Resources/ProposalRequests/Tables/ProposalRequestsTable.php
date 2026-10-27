@@ -10,7 +10,6 @@ use App\Models\Sector;
 use Filament\Actions\BulkAction;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
-use Filament\Actions\ViewAction;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
@@ -60,7 +59,7 @@ class ProposalRequestsTable
                     ->badge()
                     ->formatStateUsing(fn (string $state): string => strtoupper($state))
                     ->color('gray')
-                    ->toggleable(),
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->defaultSort('created_at', 'desc')
             ->filters([
@@ -86,9 +85,9 @@ class ProposalRequestsTable
                         false: fn (Builder $query): Builder => $query->whereNull('attachment_path'),
                     ),
             ])
+            // Rows open the request; "assign to me" is the only inline shortcut.
             ->recordActions([
-                ProposalRequestActions::assignToMe(),
-                ViewAction::make(),
+                ProposalRequestActions::assignToMe()->iconButton(),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([

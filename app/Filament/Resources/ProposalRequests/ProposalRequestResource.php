@@ -27,8 +27,6 @@ class ProposalRequestResource extends Resource
 
     protected static ?string $navigationLabel = 'Requests for proposal';
 
-    protected static bool $hasTitleCaseModelLabel = false;
-
     protected static ?string $recordTitleAttribute = 'reference';
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedInboxArrowDown;
@@ -37,8 +35,18 @@ class ProposalRequestResource extends Resource
 
     protected static ?int $navigationSort = 10;
 
+    public static function getTitleCaseModelLabel(): string
+    {
+        return 'Request for proposal';
+    }
+
+    public static function getTitleCasePluralModelLabel(): string
+    {
+        return 'Requests for proposal';
+    }
+
     /**
-     * Number of requests nobody has picked up yet.
+     * Number of new requests waiting to be reviewed.
      */
     public static function getNavigationBadge(): ?string
     {
